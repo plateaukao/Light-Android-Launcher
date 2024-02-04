@@ -206,10 +206,7 @@ public class FavouriteAppsActivity extends Activity {
     }
 
     private void showFavouriteModal(ListView listView) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-            builder = new AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Dialog_Alert);
-        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.TouchAreaDialog);
         builder.setTitle("Add favorite app");
 
         List<String> smallAdapter = new ArrayList<>();
