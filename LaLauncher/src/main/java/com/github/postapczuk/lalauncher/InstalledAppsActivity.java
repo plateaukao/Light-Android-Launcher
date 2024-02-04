@@ -12,8 +12,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,17 +33,7 @@ public class InstalledAppsActivity extends Activity {
     private ArrayAdapter<String> adapter;
     private ListView listView;
 
-    private EditText editTextFilter;
-
     private ReadWriteLock lock = new ReentrantReadWriteLock();
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (getActivities(getPackageManager()).size() - 1 != appsPosition.size()) {
-            editTextFilter.getText().clear();
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,52 +45,15 @@ public class InstalledAppsActivity extends Activity {
         this.getWindow().setFlags(FLAG_LAYOUT_IN_SCREEN, FLAG_LAYOUT_IN_SCREEN);
         setContentView(R.layout.activity_installed);
 
-        editTextFilter = (EditText) findViewById(R.id.searchFilter);
         int horizontalPadding = ScreenUtils.getDisplay(getApplicationContext()).getWidth() / 12;
         int topPadding = ScreenUtils.getDisplay(getApplicationContext()).getHeight() / 10;
         int bottomPadding = topPadding / 4;
-        editTextFilter.setPadding(horizontalPadding, topPadding, horizontalPadding, bottomPadding);
 
 
         adapter = createNewAdapter();
         listView = findViewById(R.id.mobile_list);
         listView.setAdapter(adapter);
         fetchAppList();
-
-        editTextFilter.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                fetchAppList();
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String lowered = charSequence.toString().toLowerCase();
-                lock.readLock().lock();
-                List<Pair<String, String>> list = new ArrayList<>();
-                for (Pair<String, String> entry : appsPosition) {
-                    if (lowered.length() == 0) {
-                        list.add(entry);
-                    } else {
-                        for (String word : entry.first.toLowerCase().split("\\s+")) {
-                            if (word.startsWith(lowered)) {
-                                list.add(entry);
-                                break;
-                            }
-                        }
-                    }
-                }
-                appsPosition = list;
-                (InstalledAppsActivity.this).adapter.getFilter().filter(charSequence);
-                lock.readLock().unlock();
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
     }
 
     private ArrayAdapter<String> createNewAdapter() {
