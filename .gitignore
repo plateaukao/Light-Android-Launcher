@@ -1,5 +1,6 @@
 # Random extra stuff
 *.DS_STORE
+LaLauncher/release/
 
 # Built application files
 *.apk

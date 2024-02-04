@@ -17,7 +17,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import java8.util.Comparators;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -217,8 +216,6 @@ public class FavouriteAppsActivity extends Activity {
         List<String> smallPackageNames = new ArrayList<>();
 
         List<ResolveInfo> activities = getActivities();
-        Collections.sort(activities, Comparators.comparing(pm -> pm.loadLabel(getPackageManager()).toString().toLowerCase()));
-
 
         for (ResolveInfo resolver : activities) {
             String appName = (String) resolver.loadLabel(getPackageManager());
