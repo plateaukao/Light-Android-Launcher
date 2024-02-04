@@ -1,6 +1,3 @@
-### This project is no longer actively developed, so I've decided to archive it.
-Feel free to fork the repo as long you fulfill GPL v2 License.
-
 Light Android Launcher
 ======================
 
